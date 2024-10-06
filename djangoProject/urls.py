@@ -19,8 +19,8 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('store/', include('store.urls')),
-    path('order/', include('order.urls')),
     path('', RedirectView.as_view(url='/store/', permanent=False)),
+    path('admin/', admin.site.urls),
+    path('store/', include('store.urls')),  # Store app URLs
+    path('order/', include('order.urls')),  # Order app URLs
 ]
