@@ -18,11 +18,14 @@ The project also provides API views for returning categories and products in JSO
   - `GET /store/products/`: Returns a list of products along with their immediate parent categories.
 
 ### Order App:
-- (To be implemented)
+- Order Home:
+  GET /order/: A simple welcome page for the order system.
+- Order Status:
+  GET /order/status/?order_id=<order_id>: Returns a mock status for the order. If the order_id is provided and is an even number, the status will be Shipped. If it's an odd number, the status will be Processing. If no order_id is provided, an error message is returned.
 
 ## Installation
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/yourproject.git
-cd yourproject
+git clone https://github.com/annanoaa/django-project
+
