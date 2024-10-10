@@ -14,13 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
+from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/store/', permanent=False)),
+    path('', lambda request: redirect('store_home')),
     path('admin/', admin.site.urls),
-    path('store/', include('store.urls')),  # Store app URLs
-    path('order/', include('order.urls')),  # Order app URLs
+    path('store/', include('store.urls')),
+    path('order/', include('order.urls')),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
