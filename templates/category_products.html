@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products in {{ category.name }}</title>
+</head>
+<body>
+    <h1>Products in {{ category.name }}</h1>
+
+    <ul>
+    {% for product in products %}
+        <li>
+            <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+            - Total Value: ${{ product.price|floatformat:2 }}
+        </li>
+    {% empty %}
+        <li>No products found in this category.</li>
+    {% endfor %}
+    </ul>
+
+    <div class="statistics">
+        <h2>Statistics</h2>
+        <p>Most Expensive Product: ${{ stats.max_price|floatformat:2 }}</p>
+        <p>Cheapest Product: ${{ stats.min_price|floatformat:2 }}</p>
+        <p>Average Price: ${{ stats.avg_price|floatformat:2 }}</p>
+        <p>Total Value: ${{ stats.total_value|floatformat:2 }}</p>
+    </div>
+
+    {% if products.has_other_pages %}
+    <div class="pagination">
+        {% if products.has_previous %}
+            <a href="?page={{ products.previous_page_number }}">&laquo; previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ products.number }} of {{ products.paginator.num_pages }}.
+        </span>
+
+        {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}">next &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <p><a href="{% url 'all_categories' %}">Back to Categories</a></p>
+</body>
+</html>
