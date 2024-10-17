@@ -11,10 +11,10 @@ def store_home(request):
 def all_categories(request):
     categories = Category.objects.filter(parent__isnull=True).annotate(
         product_count=Count('products', distinct=True) +
-                      Count('children__products', distinct=True) +
-                      Count('children__children__products', distinct=True)
-    ).values('id', 'name', 'product_count')
-    return JsonResponse(list(categories), safe=False)
+                      Count('children__products', distinct=True)
+    )
+    return render(request, 'all_categories.html', {'categories': categories})
+
 
 def category_products(request, category_id):
     category = get_object_or_404(Category, id=category_id)
@@ -41,18 +41,6 @@ def category_products_page(request, category_id):
     return render(request, 'category_products.html', {'category_id': category_id})
 
 def product_detail(request, product_id):
-    # product = get_object_or_404(Product, id=product_id)
-    # data = {
-    #     'id': product.id,
-    #     'name': product.name,
-    #     'description': product.description,
-    #     'price': float(product.price),
-    #     'quantity': product.quantity,
-    #     'categories': list(product.categories.values_list('name', flat=True)),
-    #     'image_url': product.image.url if product.image else None
-    # }
-    # return JsonResponse(data)
-
     product = get_object_or_404(Product, id=product_id)
     total_value = product.price * product.quantity
     context = {

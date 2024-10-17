@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store',
     'order',
+    'users',
 ]
+
+# Specify the custom User model
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,3 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_REDIRECT_URL = 'store_home'
+LOGOUT_REDIRECT_URL = 'store_home'

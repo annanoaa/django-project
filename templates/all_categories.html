@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Categories</title>
+</head>
+<body>
+    <h1>All Categories</h1>
+    
+    <ul>
+    {% for category in categories %}
+        <li>
+            <a href="{% url 'category_products' category.id %}">{{ category.name }}</a>
+            ({{ category.product_count }} product{{ category.product_count|pluralize }})
+        </li>
+    {% empty %}
+        <li>No categories found.</li>
+    {% endfor %}
+    </ul>
+
+    <p><a href="{% url 'store_home' %}">Back to Home</a></p>
+</body>
+</html>
