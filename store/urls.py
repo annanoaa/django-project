@@ -1,10 +1,28 @@
 from django.urls import path
 from . import views
 
+app_name = 'store'
+
 urlpatterns = [
-    path('', views.store_home, name='store_home'),
-    path('categories/', views.all_categories, name='all_categories'),
-    path('category/<int:category_id>/products/', views.category_products, name='category_products'),
-    path('category/<int:category_id>/', views.category_products_page, name='category_products_page'),
-    path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+    # Store URLs
+    path('',
+        views.StoreHomeView.as_view(),
+        name='home'
+    ),
+    path('shop/',
+        views.ShopView.as_view(),
+        name='shop'
+    ),
+    path('search/',
+        views.SearchView.as_view(),
+        name='search'
+    ),
+    path('product/<slug:slug>/',
+        views.ProductDetailView.as_view(),
+        name='product_detail'
+    ),
+    path('contact/',
+        views.ContactView.as_view(),
+        name='contact'
+    ),
 ]

@@ -15,7 +15,7 @@ def register(request):
         messages.error(request, "Unsuccessful registration. Invalid information.")
     else:
         form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'user/register.html', {'form': form})
 
 @login_required
 def profile(request):
@@ -27,4 +27,4 @@ def profile(request):
             return redirect('profile')
     else:
         form = CustomUserChangeForm(instance=request.user)
-    return render(request, 'profile.html', {'form': form})
+    return render(request, 'user/profile.html', {'form': form})

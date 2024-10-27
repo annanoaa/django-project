@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">Checkout</h1>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'cart_detail' %}">Cart</a></li>
+            <li class="breadcrumb-item active text-white">Checkout</li>
+        </ol>
+    </div>
+    <!-- Single Page Header End -->
+
+    <!-- Checkout Page Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <h1 class="mb-4">Billing details</h1>
+            <form method="POST" action="{% url 'checkout' %}">
+                {% csrf_token %}
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-6 col-xl-7">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">First Name<sup>*</sup></label>
+                                    <label>
+                                        <input type="text" name="first_name" class="form-control" required 
+                                               {% if user.is_authenticated %}value="{{ user.first_name }}"{% endif %}>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">Last Name<sup>*</sup></label>
+                                    <input type="text" name="last_name" class="form-control" required
+                                           {% if user.is_authenticated %}value="{{ user.last_name }}"{% endif %}>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Email Address<sup>*</sup></label>
+                            <label>
+                                <input type="email" name="email" class="form-control" required
+                                       {% if user.is_authenticated %}value="{{ user.email }}"{% endif %}>
+                            </label>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Phone<sup>*</sup></label>
+                            <label>
+                                <input type="tel" name="phone" class="form-control" required>
+                            </label>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Address<sup>*</sup></label>
+                            <label>
+                                <input type="text" name="address" class="form-control" required 
+                                       placeholder="House Number Street Name">
+                            </label>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">City<sup>*</sup></label>
+                            <label>
+                                <input type="text" name="city" class="form-control" required>
+                            </label>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Postal Code<sup>*</sup></label>
+                            <label>
+                                <input type="text" name="postal_code" class="form-control" required>
+                            </label>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Order Notes</label>
+                            <textarea name="order_notes" class="form-control" rows="4" 
+                                    placeholder="Order Notes (Optional)"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-6 col-xl-5">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Products</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart_items %}
+                                        <tr>
+                                            <th scope="row">
+                                                <div class="d-flex align-items-center mt-2">
+                                                    <img src="{{ item.product.image.url }}" 
+                                                         class="img-fluid rounded-circle"
+                                                         style="width: 90px; height: 90px;" 
+                                                         alt="{{ item.product.name }}">
+                                                </div>
+                                            </th>
+                                            <td class="py-5">{{ item.product.name }}</td>
+                                            <td class="py-5">${{ item.product.price }}</td>
+                                            <td class="py-5">{{ item.quantity }}</td>
+                                            <td class="py-5">${{ item.get_total }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="4" class="text-end py-4">
+                                            <strong>Total Amount:</strong>
+                                        </td>
+                                        <td class="py-4">
+                                            <strong>${{ cart.get_total }}</strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="payment-methods mt-4">
+                            <h4 class="mb-4">Payment Method</h4>
+                            <div class="form-check mb-3">
+                                <input type="radio" class="form-check-input" id="payment_cash" 
+                                       name="payment_method" value="cash" required>
+                                <label class="form-check-label" for="payment_cash">Cash on Delivery</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="radio" class="form-check-input" id="payment_card" 
+                                       name="payment_method" value="card" required>
+                                <label class="form-check-label" for="payment_card">Credit/Debit Card</label>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary w-100 py-3 px-4 text-uppercase">
+                                Place Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Checkout Page End -->
+{% endblock %}

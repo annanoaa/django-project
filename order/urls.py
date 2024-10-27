@@ -1,7 +1,24 @@
 from django.urls import path
-from order import views
+from . import views
+
+app_name = 'order'
 
 urlpatterns = [
-    path('', views.order_home, name='order_home'),
-    path('status/', views.order_status, name='order_status'),
+    # Order URLs
+    path('cart/',
+        views.OrderCartView.as_view(),
+        name='cart_detail'
+    ),
+    path('add-to-cart/<int:product_id>/',
+        views.AddToCartView.as_view(),
+        name='add_to_cart'
+    ),
+    path('remove-from-cart/<int:item_id>/',
+        views.RemoveFromCartView.as_view(),
+        name='remove_from_cart'
+    ),
+    path('checkout/',
+        views.CheckoutView.as_view(),
+        name='checkout'
+    ),
 ]
