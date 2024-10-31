@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     # Local apps
     'store',
     'order',
-    'users',
+    'users.apps.UsersConfig',
 ]
 
 # Custom User model
@@ -35,8 +35,8 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 # Authentication settings
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'store:home'
-LOGOUT_REDIRECT_URL = 'store:home'
+LOGIN_REDIRECT_URL = 'store:index'
+LOGOUT_REDIRECT_URL = 'store:index'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,3 +136,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = ''  # Your email
 EMAIL_HOST_PASSWORD = ''  # Your email password or app-specific password
+
+
