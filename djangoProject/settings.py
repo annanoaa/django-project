@@ -52,7 +52,7 @@ CACHES = {
 
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware', # Added this at the top
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',  # Added this at the bottom
+    'django.middleware.cache.FetchFromCacheMiddleware',
 
 ]
 
@@ -151,8 +151,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For developm
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''  # Your email
-EMAIL_HOST_PASSWORD = ''  # Your email password or app-specific password
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 
 handler404 = 'store.views.handler404'
