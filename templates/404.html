@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load cache %}
+
+{% block title %}404 - Page Not Found{% endblock %}
+
+{% block content %}
+{% cache 86400 error_404_page %}
+<div class="error-container">
+    <h1>404 - Page Not Found</h1>
+    <p>Sorry, the page you're looking for doesn't exist.</p>
+    <a href="{% url 'home' %}">Return to Homepage</a>
+</div>
+{% endcache %}
+{% endblock %}

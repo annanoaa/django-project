@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load cache %}
+
+{% block title %}500 - Server Error{% endblock %}
+
+{% block content %}
+{% cache 86400 error_500_page %}
+<div class="error-container">
+    <h1>500 - Server Error</h1>
+    <p>Sorry, something went wrong on our end.</p>
+    <a href="{% url 'home' %}">Return to Homepage</a>
+</div>
+{% endcache %}
+{% endblock %}

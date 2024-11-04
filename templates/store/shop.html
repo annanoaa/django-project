@@ -1,107 +1,104 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    {% block title %}
-        <title>Product List</title>
-    {% endblock %}
-</head>
-{% block body %}
+{% load cache %}
 
-    <div class="container-fluid fruite py-5">
-            <div class="container py-5">
-                <h1 class="mb-4">Fresh fruits shop</h1>
+{% block title %}
+    <title>Product List</title>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Fresh fruits shop</h1>
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <!-- Search and sorting section -->
                 <div class="row g-4">
-                    <div class="col-lg-12">
-                        <div class="row g-4">
-                            <div class="col-xl-3">
-                                <form action="#" method="POST">
-                                    {% csrf_token %}
-                                <div class="input-group w-100 mx-auto d-flex">
-                                    <input name="keyword" type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                    <button type="submit" id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></button>
-                                </div>
-                                    </form>
+                    <div class="col-xl-3">
+                        <form action="#" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group w-100 mx-auto d-flex">
+                                <input name="keyword" type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                                <button type="submit" id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></button>
                             </div>
-                            <div class="col-6"></div>
-                            <div class="col-xl-3">
-                                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="fruits">Default Sorting:</label>
-                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                        <option value="volvo">Nothing</option>
-                                        <option value="saab">Popularity</option>
-                                        <option value="opel">Organic</option>
-                                        <option value="audi">Fantastic</option>
-                                    </select>
+                        </form>
+                    </div>
+                    <div class="col-6"></div>
+                    <div class="col-xl-3">
+                        <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                            <label for="sort-select">Sort by:</label>
+                            <select id="sort-select" class="border-0 form-select-sm bg-light me-3" onchange="sortProducts(this.value)">
+                                <option value="-created_at" {% if current_sort == '-created_at' %}selected{% endif %}>Newest First</option>
+                                <option value="price" {% if current_sort == 'price' %}selected{% endif %}>Price: Low to High</option>
+                                <option value="-price" {% if current_sort == '-price' %}selected{% endif %}>Price: High to Low</option>
+                                <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Name: A to Z</option>
+                                <option value="-name" {% if current_sort == '-name' %}selected{% endif %}>Name: Z to A</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Categories section -->
+                    <div class="col-lg-3">
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <h4>Categories</h4>
+                                    <ul class="list-unstyled fruite-categorie">
+                                        {% for category in categories %}
+                                        <li>
+                                            <div class="d-flex justify-content-between fruite-name">
+                                                <a href="{% url 'product_list' slug=category.slug%}"><i class="fas fa-apple-alt me-2"></i>{{ category.name }}</a>
+                                                <span>({{ category.product_count }})</span>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        <div class="row g-4">
-                            <div class="col-lg-3">
-                                <div class="row g-4">
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4>Categories</h4>
-                                            <ul class="list-unstyled fruite-categorie">
-                                                {% for category in categories %}
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="{% url 'product_list' slug=category.slug%}"><i class="fas fa-apple-alt me-2"></i>{{ category.name }}</a>
-                                                        <span>({{ category.product_count }})</span>
-                                                    </div>
-                                                </li>
-                                                {% endfor %}
-                                            </ul>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div class="col-lg-9">
+                        <div class="row g-4 justify-content-center">
+                            {% for product in products %}
+                            <div class="col-md-6 col-lg-6 col-xl-4">
+                                <div class="rounded position-relative fruite-item">
+                                    <div class="fruite-img">
+                                        <img src="{{ product.image.url }}" class="img-fluid w-100 rounded-top" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
+                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                        <h4><a href="{% url 'product_details' slug=product.slug%}">{{ product.name }}</a></h4>
+                                        <p>{{ product.description }}</p>
+                                        <div class="d-flex justify-content-between flex-lg-wrap">
+                                            <p class="text-dark fs-5 fw-bold mb-0">{{ product.price }}$ / kg</p>
+                                            <button onclick="addToCart({{ product.id }})" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-9">
-                                <div class="row g-4 justify-content-center">
+                            {% endfor %}
 
-                                    {% for product in products%}
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img">
-                                                <img src="/media/{{ product.image }}" class="img-fluid w-100 rounded-top" alt="Image not found">
-                                            </div>
-                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                <h4><a href="{% url 'product_details' slug=product.slug%}">{{ product.name }}</a></h4>
-                                                <p>{{ product.description }}</p>
-                                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                                    <p class="text-dark fs-5 fw-bold mb-0">{{ product.price }}$ / kg</p>
-                                                    <form action="{% url 'add_to_cart'%}" method="post">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="product_id" value="{{ product.id }}">
-                                    <input type="hidden" name="current_url" value="{{ request.build_absolute_uri }}">
-                                                        <input type="hidden" name="quantity" value="1">
-                                                    <button href="#" class="submit btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
-                                                        </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <!-- Pagination -->
+                            <div class="col-12">
+                                <div class="pagination d-flex justify-content-center mt-5">
+                                    {% if page_obj.has_previous %}
+                                        <a href="?page={{ page_obj.previous_page_number }}" class="rounded">«</a>
+                                    {% endif %}
+                                    {% for page_num in get_elided_page_range %}
+                                        {% if page_num == '…' %}
+                                            <a href="javascript:void(0)" class="rounded">...</a>
+                                        {% else %}
+                                            <a href="?page={{ page_num }}" class="{% if page_num == page_obj.number %}active{% endif %} rounded">{{ page_num }}</a>
+                                        {% endif %}
                                     {% endfor %}
-
-                                    <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
-                                            {%  if page_obj.has_previous %}
-                                                <a href="?page={{ page_obj.previous_page_number }}" class="rounded">«</a>
-                                            {% endif %}
-                                            {% for page_num in get_elided_page_range %}
-                                                {% if page_num == '…' %}
-                                                    <a href="javascript:void(0)" class="rounded">...</a>
-                                                {% else %}
-                                                    <a href="?page={{ page_num }}" class="{% if page_num == page_obj.number %}active{% endif %} rounded">{{ page_num }}</a>
-                                                {% endif %}
-                                            {% endfor %}
-                                            {% if page_obj.has_next %}
-                                                <a href="?page={{ page_obj.next_page_number }}" class="rounded">»</a>
-                                            {% endif %}
-                                        </div>
-                                    </div>
+                                    {% if page_obj.has_next %}
+                                        <a href="?page={{ page_obj.next_page_number }}" class="rounded">»</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -109,6 +106,48 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
+
+{% block extra_scripts %}
+<script>
+function sortProducts(value) {
+    // Get current URL
+    const url = new URL(window.location.href);
+    
+    // Update or add the sort parameter
+    url.searchParams.set('sort', value);
+    
+    // Remove page parameter when sorting changes
+    url.searchParams.delete('page');
+    
+    // Navigate to the new URL
+    window.location.href = url.toString();
+}
+
+async function addToCart(productId) {
+    try {
+        const response = await fetch('{% url "add_to_cart" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: 1
+            })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById('cart-count').textContent = data.cart_count;
+        }
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+    }
+}
+</script>
 {% endblock %}
-</html>
+{% endblock %}

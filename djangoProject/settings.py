@@ -10,7 +10,10 @@ SECRET_KEY = 'django-insecure-o+9og=*q!2w7ij))1%_@q_@5tcb8(%p!o-011u-7mf5-p#ih5*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'localhost',
+    '127.0.0.1',
+    '[::1]',
+                  ]
 
 # Application definition
 INSTALLED_APPS = [
@@ -34,11 +37,22 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'users.CustomUser'
 
 # Authentication settings
+
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'store:index'
-LOGOUT_REDIRECT_URL = 'store:index'
+LOGIN_REDIRECT_URL = 'store:home'
+LOGOUT_REDIRECT_URL = 'store:home'
+
+# Cache settings
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware', # Added this at the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -46,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',  # Added this at the bottom
+
 ]
 
 ROOT_URLCONF = 'djangoProject.urls'
@@ -53,7 +69,7 @@ ROOT_URLCONF = 'djangoProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -61,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'store.views.cart_processor',
             ],
         },
     },
@@ -137,4 +154,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = ''  # Your email
 EMAIL_HOST_PASSWORD = ''  # Your email password or app-specific password
 
+
+handler404 = 'store.views.handler404'
+handler500 = 'store.views.handler500'
 
