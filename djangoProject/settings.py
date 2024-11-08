@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from pathlib import Path
 import os
 
@@ -31,6 +32,8 @@ INSTALLED_APPS = [
     'store',
     'order',
     'users.apps.UsersConfig',
+    'modeltranslation',
+    'rosetta',
 ]
 
 # Custom User model
@@ -55,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -116,7 +120,19 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
+USE_L10N = True
 USE_TZ = True
+
+LANGUAGES = (
+    ('en', _('English')),
+    ('ka', _('Georgian')),
+)
+
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
@@ -146,8 +162,9 @@ MESSAGE_TAGS = {
 CART_SESSION_ID = 'cart'
 
 # Email settings (update these with your email service details)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # For production
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -158,3 +175,6 @@ EMAIL_HOST_PASSWORD = ''
 handler404 = 'store.views.handler404'
 handler500 = 'store.views.handler500'
 
+# Rosetta settings
+ROSETTA_SHOW_AT_ADMIN_PANEL = True
+ROSETTA_MESSAGES_PER_PAGE = 25

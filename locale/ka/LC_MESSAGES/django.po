@@ -1,0 +1,131 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Django Shop\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-08 12:00+0000\n"
+"PO-Revision-Date: 2024-11-08 12:00+0000\n"
+"Last-Translator: Your Name\n"
+"Language-Team: Georgian\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Error pages
+msgid "Page not found"
+msgstr "გვერდი ვერ მოიძებნა"
+
+msgid "Server error"
+msgstr "სერვერის შეცდომა"
+
+# Home and Contact
+msgid "Welcome to our store"
+msgstr "მოგესალმებით ჩვენს მაღაზიაში"
+
+msgid "Contact Us"
+msgstr "დაგვიკავშირდით"
+
+# Sorting options
+msgid "Price Low to High"
+msgstr "ფასი - დაბლიდან მაღლა"
+
+msgid "Price High to Low"
+msgstr "ფასი - მაღლიდან დაბლა"
+
+
+# Product listings
+msgid "All Products"
+msgstr "ყველა პროდუქტი"
+
+msgid "Products in category: %(category)s"
+msgstr "პროდუქტები კატეგორიაში: %(category)s"
+
+# Product details
+msgid "Category"
+msgstr "კატეგორია"
+
+msgid "Price"
+msgstr "ფასი"
+
+msgid "In Stock"
+msgstr "მარაგშია"
+
+msgid "Out of Stock"
+msgstr "არ არის მარაგში"
+
+msgid "Description"
+msgstr "აღწერა"
+
+# Cart page
+msgid "Shopping Cart"
+msgstr  "კალათა"
+
+msgid "Quantity"
+msgstr "რაოდენობა"
+
+msgid "Total"
+msgstr  "ჯამი"
+
+msgid "Subtotal"
+msgstr "ქვეჯამი"
+
+msgid "Grand Total"
+msgstr "სრული ჯამი"
+
+msgid "Your cart is empty"
+msgstr "თქვენი კალათა ცარიელია"
+
+msgid "Continue Shopping"
+msgstr "შოპინგის გაგრძელება"
+
+msgid "Proceed to Checkout"
+msgstr  "შეკვეთის გაფორმება"
+
+# Cart messages
+msgid "%(product)s added to cart successfully"
+msgstr  "%(product) წარმატებით დაემატა კალათაში"
+
+msgid "%(product)s removed from cart"
+msgstr "%(product) ამოღებულია კალათიდან"
+
+msgid "Cart updated successfully"
+msgstr "კალათა წარმატებით განახლდა"
+
+msgid "Error updating cart"
+msgstr "შეცდომა კალათის განახლებისას"
+
+# Checkout page
+msgid "Checkout"
+msgstr  "შეკვეთა"
+
+msgid "Payment Method"
+msgstr "გადახდის მეთოდი"
+
+msgid "First Name"
+msgstr "სახელი"
+
+msgid "Last Name"
+msgstr  "გვარი"
+
+msgid "Email"
+msgstr "ელ.ფოსტა"
+
+msgid "Phone"
+msgstr "ტელეფონი"
+
+msgid "Address"
+msgstr  "მისამართი"
+
+msgid "Place Order"
+msgstr  "შეკვეთის განთავსება"
+
+msgid "Order Summary"
+msgstr "შეკვეთის მიმოხილვა"
+
+# Authentication messages
+msgid "Please log in to proceed with checkout"
+msgstr  "გთხოვთ შეხვიდეთ სისტემაში შეკვეთის გასაფორმებლად"
+
+msgid "Your cart has been transferred to your account"
+msgstr  "თქვენი კალათა გადატანილია თქვენს ანგარიშზე"
